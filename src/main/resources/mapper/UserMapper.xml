@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaishengit.mapper.UserMapper">
+
+    <!--左联接查询-->
+    <select id="find" parameterType="int" resultType="user">
+         SELECT
+            tu.id,
+            username,
+            address,
+            PASSWORD,
+            countryid AS 'country.id',
+            tc.countname AS 'country.countname'
+        FROM
+            t_user AS tu
+        LEFT JOIN t_country AS tc ON tu.countryid = tc.id
+        WHERE
+            tu.id = #{id}
+    </select>
+    <!-- 根据id查询user对象-->
+    <select id="findById" parameterType="int" resultType="user">
+        SELECT * FROM t_user WHERE id=#{id}
+    </select>
+    <!--查询全部-->
+    <select id="findAll" resultType="user">
+        SELECT * FROM t_user
+    </select>
+    <!--增加对象-->
+    <insert id="add" parameterType="user">
+        INSERT INTO t_user (username,address,password,countryid) VALUES (#{userName},#{address},#{passWord},#{countryId})
+    </insert>
+    <!--修改-->
+    <update id="update" parameterType="user">
+        UPDATE t_user SET username = #{userName},address = #{address},password = #{passWord},countryid = #{countryId}
+        WHERE id = #{id}
+    </update>
+    <!--删除-->
+    <delete id="delete" parameterType="int">
+        DELETE FROM t_user WHERE id = #{id}
+    </delete>
+    <select id="page" resultType="user">
+        SELECT * FROM t_user limit #{offset},#{size}
+    </select>
+
+</mapper>

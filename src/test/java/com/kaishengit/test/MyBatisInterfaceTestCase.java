@@ -1,0 +1,82 @@
+package com.kaishengit.test;
+
+import com.kaishengit.entity.User;
+import com.kaishengit.mapper.UserMapper;
+import com.kaishengit.util.MyBatisUtil;
+import org.apache.ibatis.session.SqlSession;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.List;
+
+/**
+ * Created by zhangyu on 2017/10/24.
+ */
+public class MyBatisInterfaceTestCase {
+    private SqlSession sqlSession;
+    @Before
+    public void init() {
+        sqlSession = MyBatisUtil.getSqlSession();
+    }
+    @After
+    public void close() {
+        sqlSession.close();
+    }
+    @Test
+    public void add() {
+        //  创建接口的实现类
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        User user = new User("aaa","shanghai","222");
+        int rows = userMapper.add(user);
+        System.out.println("rows--->" + rows);
+        System.out.println("主键--->" + user.getId());
+        sqlSession.commit();
+    }
+    @Test
+    public void update() {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        User user = userMapper.findById(12);
+        user.setCountryId(10);
+        int row = userMapper.update(user);
+        System.out.println(row);
+        sqlSession.commit();
+    }
+    @Test
+    public void findOne() {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        User user = userMapper.findById(12);
+        System.out.println("查找到user: " + user);
+    }
+    @Test
+    public void findAll() {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        List<User> userList = userMapper.findAll();
+        for (User user : userList) {
+            System.out.println("查询全部：" + user);
+        }
+    }
+    @Test
+    public void delete() {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        userMapper.delete(10);
+        sqlSession.commit();
+    }
+    @Test
+    public void page() {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        List<User> userList = userMapper.page(0,3);
+        for (User user : userList) {
+            System.out.println(user);
+        }
+
+    }
+    @Test
+    public void find() {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        User user = userMapper.find(13);
+        System.out.println(user);
+        System.out.println("姓名：" + user.getUserName() + ";国家：" + user.getCountry().getCountname());
+    }
+
+}
