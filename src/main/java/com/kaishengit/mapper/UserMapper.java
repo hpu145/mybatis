@@ -9,7 +9,6 @@ import java.util.List;
  * Created by zhangyu on 2017/10/24.
  */
 public interface UserMapper {
-
     int add(User user);
     int update(User user);
     int delete(int id);
@@ -18,4 +17,6 @@ public interface UserMapper {
     List<User> page(@Param("offset")int offset,@Param("size")int size);
     User find(int id);
 
+    User findByIdWithTag(int userId);
+    int batchSaveUser(@Param("userList") List<User> userList);
 }

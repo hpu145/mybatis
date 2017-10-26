@@ -1,5 +1,7 @@
 package com.kaishengit.entity;
 
+import java.util.List;
+
 /**
  * Created by zhangyu on 2017/10/23.
  */
@@ -7,9 +9,10 @@ public class User {
     private int id;
     private String userName;
     private String address;
-    private String passWord;
+    private String passWord; 
     private int countryId;
     private Country country;
+    private List<Tag> tagList;
 
     public User(){}
     public User(String userName,String address,String passWord){
@@ -66,6 +69,14 @@ public class User {
         this.country = country;
     }
 
+    public List<Tag> getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(List<Tag> tagList) {
+        this.tagList = tagList;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -75,6 +86,7 @@ public class User {
                 ", passWord='" + passWord + '\'' +
                 ", countryId=" + countryId +
                 ", country=" + country +
+                ", tagList=" + tagList +
                 '}';
     }
 }

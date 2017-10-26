@@ -1,5 +1,6 @@
 package com.kaishengit.test;
 
+import com.kaishengit.entity.Tag;
 import com.kaishengit.entity.User;
 import com.kaishengit.mapper.UserMapper;
 import com.kaishengit.util.MyBatisUtil;
@@ -8,6 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -77,6 +79,29 @@ public class MyBatisInterfaceTestCase {
         User user = userMapper.find(13);
         System.out.println(user);
         System.out.println("姓名：" + user.getUserName() + ";国家：" + user.getCountry().getCountname());
+    }
+    @Test
+    public void findByIdWithTag() {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        User user = userMapper.findByIdWithTag(1);
+        System.out.println("user :" + user);
+        List<Tag> tagList = user.getTagList();
+        for (Tag tag : tagList) {
+            System.out.println(tag);
+        }
+
+    }
+
+    @Test
+    public void batchSaveUser() {
+        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+        User user1 = new User("AA","河南","121");
+        User user2 = new User("BB","河南","121");
+        User user3 = new User("CC","河南","121");
+        List<User> userList = Arrays.asList(user1,user2,user3);
+        int num = userMapper.batchSaveUser(userList);
+        sqlSession.commit();
+        System.out.println("受影响行数：" + num);
     }
 
 }
